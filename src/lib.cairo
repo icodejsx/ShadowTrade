@@ -1,32 +1,47 @@
-/// Interface representing `HelloContract`.
-/// This interface allows modification and retrieval of the contract balance.
-#[starknet::interface]
-pub trait IHelloStarknet<TContractState> {
-    /// Increase contract balance.
-    fn increase_balance(ref self: TContractState, amount: felt252);
-    /// Retrieve contract balance.
-    fn get_balance(self: @TContractState) -> felt252;
-}
-
-/// Simple contract for managing balance.
 #[starknet::contract]
-mod HelloStarknet {
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+mod ShadowTrade {
+
+    use starknet::ContractAddress;
+    use starknet::get_caller_address;
+
+    use starknet::storage::{
+        StoragePointerReadAccess,
+        StoragePointerWriteAccess
+    };
 
     #[storage]
     struct Storage {
-        balance: felt252,
+        question: felt252,
+        commit_deadline: u64,
+        reveal_deadline: u64,
+        resolved: bool,
+        outcome: u8, // 0 = NO, 1 = YES
+        admin: ContractAddress,
     }
 
-    #[abi(embed_v0)]
-    impl HelloStarknetImpl of super::IHelloStarknet<ContractState> {
-        fn increase_balance(ref self: ContractState, amount: felt252) {
-            assert(amount != 0, 'Amount cannot be 0');
-            self.balance.write(self.balance.read() + amount);
-        }
+    #[constructor]
+    fn constructor(
+        ref self: ContractState,
+        question: felt252,
+        commit_deadline: u64,
+        reveal_deadline: u64
+    ) {
+        self.question.write(question);
+        self.commit_deadline.write(commit_deadline);
+        self.reveal_deadline.write(reveal_deadline);
+        self.resolved.write(false);
+        self.outcome.write(0);
+        self.admin.write(get_caller_address());
+    }
 
-        fn get_balance(self: @ContractState) -> felt252 {
-            self.balance.read()
-        }
+    #[external(v0)]
+    fn get_market_info(self: @ContractState) -> (felt252, u64, u64, bool, u8) {
+        (
+            self.question.read(),
+            self.commit_deadline.read(),
+            self.reveal_deadline.read(),
+            self.resolved.read(),
+            self.outcome.read()
+        )
     }
 }
