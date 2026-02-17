@@ -2,23 +2,46 @@
 version = 1
 
 [[package]]
-name = "shadow_trade"
-version = "0.1.0"
+name = "openzeppelin_access"
+version = "0.20.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.20.0#7756fd1de2b4ebd239fa6e372d75535cea02e5e5"
 dependencies = [
- "snforge_std",
+ "openzeppelin_introspection",
 ]
 
 [[package]]
-name = "snforge_scarb_plugin"
-version = "0.56.0"
-source = "registry+https://scarbs.xyz/"
-checksum = "sha256:d5f2d878f7ae36c8149c517e2d618a95d7833598a76083cb12ea3f00da06a618"
+name = "openzeppelin_account"
+version = "0.20.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.20.0#7756fd1de2b4ebd239fa6e372d75535cea02e5e5"
+dependencies = [
+ "openzeppelin_introspection",
+ "openzeppelin_utils",
+]
 
 [[package]]
-name = "snforge_std"
-version = "0.56.0"
-source = "registry+https://scarbs.xyz/"
-checksum = "sha256:87dfe06ffd5cf1d5a075b7a5c8dff442b66d0eeaf27921140cf446213eb29a68"
+name = "openzeppelin_introspection"
+version = "0.20.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.20.0#7756fd1de2b4ebd239fa6e372d75535cea02e5e5"
+
+[[package]]
+name = "openzeppelin_token"
+version = "0.20.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.20.0#7756fd1de2b4ebd239fa6e372d75535cea02e5e5"
 dependencies = [
- "snforge_scarb_plugin",
+ "openzeppelin_access",
+ "openzeppelin_account",
+ "openzeppelin_introspection",
+ "openzeppelin_utils",
+]
+
+[[package]]
+name = "openzeppelin_utils"
+version = "0.20.0"
+source = "git+https://github.com/OpenZeppelin/cairo-contracts.git?tag=v0.20.0#7756fd1de2b4ebd239fa6e372d75535cea02e5e5"
+
+[[package]]
+name = "shadow_trade"
+version = "0.1.0"
+dependencies = [
+ "openzeppelin_token",
 ]
